@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 
 void Start() {
 	printf("Jeu de Roulette de Casino.\n");
@@ -13,15 +14,13 @@ void Menu() {
 		Jouer = 1,
 		Quiter
 	};
-
-	const char* ChoixJouer = "\nQue voulez vous faire ? Jouer tapez [1] Quiter tapez [2] \n";
-
+	const char* ChoixJouer = "\nQue voulez vous faire ? Jouer tapez [1] Quiter tapez [2] : ";
 	printf (ChoixJouer);
 	int action;
 	scanf_s("%d", &action);
 
 	enum MenuButtons MonMenuBoutons = action;
-
+	
 	switch (MonMenuBoutons) {
 	case Jouer:
 		while (1) {
@@ -30,6 +29,7 @@ void Menu() {
 			printf(ChoixJouer);
 			scanf_s("%d", &choix);
 			system("cls");
+			//temp();
 			if (choix == 2) {
 				break;
 			}
@@ -45,6 +45,25 @@ void Menu() {
 void End() {
 	exit(0);
 };
+
+struct statistique {
+	int nbPartie;
+};
+
+int IncrementGame(int* Parties) {
+	++(*Parties);
+	return *Parties;
+}
+
+struct statistique test = { 0 };
+
+void temp() {
+	IncrementGame(&test.nbPartie);
+	printf("Vous avez joue %d parties\n", test.nbPartie);
+    return 0;
+}
+
+
 
 int numeroAleatoire(int max) {
 	return rand() % max;
@@ -176,6 +195,8 @@ void Roulette() {
 
 	int paris[100];
 	int mises[100];
+	int totalDesMises = 0;
+	int totalDesGains = 0;
 
 	for (int i = 0; i < nbParis; i++) {
 		printf("Pari %d : Pour un nombre de 0 a 36 [0-36], pair [37] impair [38], pass [39] manque[40], 1 ers 12 [41], 2 nds 12 [42], 3 emes 12 [43], rouge [44], noir [45] : ", i + 1);
@@ -202,4 +223,5 @@ void Roulette() {
 	afficherPlage(numeroChoisi);
 	afficherCouleur(numeroChoisi);
 	gain(paris, mises, nbParis, numeroChoisi);
+	temp();
 }
