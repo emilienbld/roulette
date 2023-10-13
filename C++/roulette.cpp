@@ -19,49 +19,49 @@ int RouletteGame::numeroAleatoire(int max) {
 
 void RouletteGame::afficherCouleur(int numeroGagnant) {
     if (numeroGagnant == 0) {
-        std::cout << "La couleur du numéro gagnant est : vert" << std::endl;
+        std::cout << "La couleur du numÃ©ro gagnant est : vert" << std::endl;
     }
     else if (numeroGagnant % 2 == 0) {
-        std::cout << "La couleur du numéro gagnant est : rouge" << std::endl;
+        std::cout << "La couleur du numÃ©ro gagnant est : rouge" << std::endl;
     }
     else {
-        std::cout << "La couleur du numéro gagnant est : noir" << std::endl;
+        std::cout << "La couleur du numÃ©ro gagnant est : noir" << std::endl;
     }
 }
 
 void RouletteGame::afficherParite(int numero) {
     if (numero == 0) {
-        std::cout << "La parité du numéro gagnant est : neutre" << std::endl;
+        std::cout << "La paritÃ© du numÃ©ro gagnant est : neutre" << std::endl;
     }
     else if (numero % 2 == 0) {
-        std::cout << "La parité du numéro gagnant est : pair" << std::endl;
+        std::cout << "La paritÃ© du numÃ©ro gagnant est : pair" << std::endl;
     }
     else {
-        std::cout << "La parité du numéro gagnant est : impair" << std::endl;
+        std::cout << "La paritÃ© du numÃ©ro gagnant est : impair" << std::endl;
     }
 }
 
 void RouletteGame::afficherPassManque(int numero) {
     if (numero == 0) {
-        std::cout << "Le numéro gagnant est : nul" << std::endl;
+        std::cout << "Le numÃ©ro gagnant est : nul" << std::endl;
     }
     else if (numero >= 1 && numero <= 18) {
-        std::cout << "Le numéro gagnant est du côté : pass" << std::endl;
+        std::cout << "Le numÃ©ro gagnant est du cÃ´tÃ© : pass" << std::endl;
     }
     else if (numero >= 19 && numero <= 36) {
-        std::cout << "Le numéro gagnant est du côté : manque" << std::endl;
+        std::cout << "Le numÃ©ro gagnant est du cÃ´tÃ© : manque" << std::endl;
     }
 }
 
 void RouletteGame::afficherPlage(int numero) {
     if (numero >= 1 && numero <= 12) {
-        std::cout << "Plage du numéro gagnant : 1ers 12" << std::endl;
+        std::cout << "Plage du numÃ©ro gagnant : 1ers 12" << std::endl;
     }
     else if (numero >= 13 and numero <= 24) {
-        std::cout << "Plage du numéro gagnant : 2nds 12" << std::endl;
+        std::cout << "Plage du numÃ©ro gagnant : 2nds 12" << std::endl;
     }
     else if (numero >= 25 && numero <= 36) {
-        std::cout << "Plage du numéro gagnant : 3èmes 12" << std::endl;
+        std::cout << "Plage du numÃ©ro gagnant : 3Ã¨mes 12" << std::endl;
     }
 }
 
@@ -69,27 +69,27 @@ void RouletteGame::gain(int paris[], int mises[], int nbParis, int numeroChoisi)
     for (int i = 0; i < nbParis; i++) {
         if (paris[i] >= 0 && paris[i] <= 36) {
             if (paris[i] == numeroChoisi) {
-                std::cout << "Pari sur le numéro " << paris[i] << ", mise : " << mises[i] << ", gain : " << mises[i] * 36 << std::endl;
+                std::cout << "Pari sur le numÃ©ro " << paris[i] << ", mise : " << mises[i] << ", gain : " << mises[i] * 36 << std::endl;
             }
         }
         else if (paris[i] == 37) {
             if (numeroChoisi % 2 == 0) {
-                std::cout << "Pari sur la parité (pair), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
+                std::cout << "Pari sur la paritÃ© (pair), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
             }
         }
         else if (paris[i] == 38) {
             if (numeroChoisi % 2 != 0) {
-                std::cout << "Pari sur la parité (impair), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
+                std::cout << "Pari sur la paritÃ© (impair), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
             }
         }
         else if (paris[i] == 39) {
             if (numeroChoisi >= 1 && numeroChoisi <= 18) {
-                std::cout << "Pari sur le côté (pass), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
+                std::cout << "Pari sur le cÃ´tÃ© (pass), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
             }
         }
         else if (paris[i] == 40) {
             if (numeroChoisi >= 19 && numeroChoisi <= 36) {
-                std::cout << "Pari sur le côté (manque), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
+                std::cout << "Pari sur le cÃ´tÃ© (manque), mise : " << mises[i] << ", gain : " << mises[i] * 2 << std::endl;
             }
         }
         else if (paris[i] == 41) {
@@ -104,7 +104,7 @@ void RouletteGame::gain(int paris[], int mises[], int nbParis, int numeroChoisi)
         }
         else if (paris[i] == 43) {
             if (numeroChoisi >= 25 && numeroChoisi <= 36) {
-                std::cout << "Pari sur la plage (3èmes 12), mise : " << mises[i] << ", gain : " << mises[i] * 3 << std::endl;
+                std::cout << "Pari sur la plage (3Ã¨mes 12), mise : " << mises[i] << ", gain : " << mises[i] * 3 << std::endl;
             }
         }
         else if (paris[i] == 44) {
@@ -131,11 +131,11 @@ void RouletteGame::Roulette() {
     int mises[100];
 
     for (int i = 0; i < nbParis; i++) {
-        std::cout << "Pari " << i + 1 << " : Pour un numéro de 0 à 36, pair (37), impair (38), pass (39), manque (40), 1ers 12 (41), 2nds 12 (42), 3èmes 12 (43), rouge (44), noir (45) : ";
+        std::cout << "Pari " << i + 1 << " : Pour un numÃ©ro de 0 Ã  36, pair (37), impair (38), pass (39), manque (40), 1ers 12 (41), 2nds 12 (42), 3Ã¨mes 12 (43), rouge (44), noir (45) : ";
         std::cin >> paris[i];
 
         if (paris[i] < 0 || (paris[i] > 36 && paris[i] < 37) || (paris[i] > 45)) {
-            std::cout << "Pari invalide. Choisissez un numéro entre 0 et 36, ou [37] pour pair, [38] pour impair, [39] pour pass, [40] pour manque, [41] pour 1ers 12, [42] pour 2nds 12, [43] pour 3èmes 12, rouge [44], noir [45]." << std::endl;
+            std::cout << "Pari invalide. Choisissez un numÃ©ro entre 0 et 36, ou [37] pour pair, [38] pour impair, [39] pour pass, [40] pour manque, [41] pour 1ers 12, [42] pour 2nds 12, [43] pour 3Ã¨mes 12, rouge [44], noir [45]." << std::endl;
             i--;
             continue;
         }
@@ -147,7 +147,7 @@ void RouletteGame::Roulette() {
     int numeroGagnant = numeroAleatoire(37);
     std::cout << "Rien ne va plus..." << std::endl;
     int numeroChoisi = numeros[numeroGagnant];
-    std::cout << "Le numéro gagnant est : " << numeroChoisi << std::endl;
+    std::cout << "Le numÃ©ro gagnant est : " << numeroChoisi << std::endl;
     afficherParite(numeroChoisi);
     afficherCouleur(numeroChoisi);
 }
@@ -184,6 +184,6 @@ void RouletteGame::Menu() {
 }
 
 void RouletteGame::End() {
-    std::cout << "Merci d'avoir joué à la Roulette de Casino. Au revoir !" << std::endl;
+    std::cout << "Merci d'avoir jouÃ© Ã  la Roulette de Casino. Au revoir !" << std::endl;
     exit(0);
 }
