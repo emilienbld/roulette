@@ -14,7 +14,9 @@ void Menu() {
 		Quiter
 	};
 
-	printf("\nQue voulez vous faire ? Jouer tapez [1] Quiter tapez [2] \n");
+	const char* ChoixJouer = "\nQue voulez vous faire ? Jouer tapez [1] Quiter tapez [2] \n";
+
+	printf (ChoixJouer);
 	int action;
 	scanf_s("%d", &action);
 
@@ -25,7 +27,7 @@ void Menu() {
 		while (1) {
 			Roulette();
 			int choix;
-			printf("Voulez-vous refaire une partie ? Jouer [1] Quiter [2] : ");
+			printf(ChoixJouer);
 			scanf_s("%d", &choix);
 			system("cls");
 			if (choix == 2) {
@@ -49,51 +51,61 @@ int numeroAleatoire(int max) {
 }
 
 void afficherCouleur(int numeroGagnant) {
+	const char* couleur = "";
 	if (numeroGagnant == 0) {
-		printf("La couleur du numÃ©ro gagnant est : vert\n");
+		couleur = "Vert";
 	}
 	else if (numeroGagnant % 2 == 0) {
-		printf("La couleur du numÃ©ro gagnant est : rouge\n");
+		couleur = "Rouge";
 	}
 	else {
-		printf("La couleur du numÃ©ro gagnant est : noir\n");
+		couleur = "Noir";
 	}
+	printf("La couleur du numero gagnant est : %s\n", couleur);
 }
 
+
 void afficherParite(int numero) {
+	const char* parite = "";
 	if (numero == 0) {
-		printf("La parite du numero gagnant est : neutre\n");
+		parite = "Neutre";
 	}
 	else if (numero % 2 == 0) {
-		printf("La parite du numero gagnant est : pair\n");
+		parite = "Pair";
 	}
 	else {
-		printf("La parite du numero gagnant est : impair\n");
+		parite = "Impair";
 	}
+	printf("La parite du numero gagnant est : %s\n", parite);
 }
 
 void afficherPassManque(int numero) {
+	const char* PassManque = "";
 	if (numero == 0) {
-		printf("Le numero gagnant est : nul\n");
+		PassManque = "Nul";
 	}
 	else if (numero >= 1 && numero <= 18) {
-		printf("Le numero gagnant est du cÃ´te : pass\n");
+		PassManque = "Pass";
 	}
 	else if (numero >= 19 && numero <= 36) {
-		printf("Le numero gagnant est du cÃ´te : manque\n");
+		PassManque = "Manque";
 	}
+	printf("Le numero gagnant est du cote : %s\n", PassManque);
 }
 
 void afficherPlage(int numero) {
+	const char* plage = "";
 	if (numero >= 1 && numero <= 12) {
-		printf("Plage du numero gagnant : 1 ers 12\n");
+		plage = "1 ers 12";
 	}
 	else if (numero >= 13 && numero <= 24) {
-		printf("Plage du numero gagnant : 2 nds 12\n");
+		plage = "2 nds 12";
 	}
 	else if (numero >= 25 && numero <= 36) {
-		printf("Plage du numero gagnant : 3 emes 12\n");
+		plage = "3 emes 12";
 	}
+	printf("Plage du numero gagnant : %s\n", plage);
+
 }
 
 void gain(int paris[], int mises[], int nbParis, int numeroChoisi) {
@@ -103,22 +115,22 @@ void gain(int paris[], int mises[], int nbParis, int numeroChoisi) {
 				printf("Pari sur le numero %d, mise : %d, gain : %d\n", paris[i], mises[i], mises[i] * 36);
 			}
 		}
-		else if (paris[i] == 37) { // Pari sur la paritÃ© (pair)
+		else if (paris[i] == 37) { // Pari sur la parité (pair)
 			if (numeroChoisi % 2 == 0) {
 				printf("Pari sur la parite (pair), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
 		}
-		else if (paris[i] == 38) { // Pari sur la paritÃ© (impair)
+		else if (paris[i] == 38) { // Pari sur la parité (impair)
 			if (numeroChoisi % 2 != 0) {
 				printf("Pari sur la parite (impair), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
 		}
-		else if (paris[i] == 39) { // Pari sur le cÃ´tÃ© (pass)
+		else if (paris[i] == 39) { // Pari sur le côté (pass)
 			if (numeroChoisi >= 1 && numeroChoisi <= 18) {
 				printf("Pari sur le cote (pass), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
 		}
-		else if (paris[i] == 40) { // Pari sur le cÃ´tÃ© (manque)
+		else if (paris[i] == 40) { // Pari sur le côté (manque)
 			if (numeroChoisi >= 19 && numeroChoisi <= 36) {
 				printf("Pari sur le cote (manque), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
@@ -171,7 +183,7 @@ void Roulette() {
 
 		if (paris[i] < 0 || (paris[i] > 36 && paris[i] < 37) || (paris[i] > 45)) {
 			printf("Pari invalide. Choisissez un numero entre 0 et 36, ou [37] pour pair, [38] pour impair, [39] pour pass, [40] pour manque, [41] pour 1 ers 12, [42] pour 2 nds 12, [43] pour 3 emes 12, rouge [44], noir [45].\n");
-			i--; // RÃ©pÃ©ter la saisie du pari pour cette itÃ©ration.
+			i--; // Répéter la saisie du pari pour cette itération.
 			continue;
 		}
 
@@ -179,7 +191,7 @@ void Roulette() {
 		scanf("%d", &mises[i]);
 	}
 
-	int numeroGagnant = numeroAleatoire(37); // GÃ©nÃ¨re un numÃ©ro alÃ©atoire entre 0 et 36
+	int numeroGagnant = numeroAleatoire(37); // Génère un numéro aléatoire entre 0 et 36
 
 	printf("Rien ne va plus...\n");
 	int numeroChoisi = numeros[numeroGagnant];
