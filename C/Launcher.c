@@ -50,13 +50,13 @@ int numeroAleatoire(int max) {
 
 void afficherCouleur(int numeroGagnant) {
 	if (numeroGagnant == 0) {
-		printf("La couleur du numéro gagnant est : vert\n");
+		printf("La couleur du numÃ©ro gagnant est : vert\n");
 	}
 	else if (numeroGagnant % 2 == 0) {
-		printf("La couleur du numéro gagnant est : rouge\n");
+		printf("La couleur du numÃ©ro gagnant est : rouge\n");
 	}
 	else {
-		printf("La couleur du numéro gagnant est : noir\n");
+		printf("La couleur du numÃ©ro gagnant est : noir\n");
 	}
 }
 
@@ -77,10 +77,10 @@ void afficherPassManque(int numero) {
 		printf("Le numero gagnant est : nul\n");
 	}
 	else if (numero >= 1 && numero <= 18) {
-		printf("Le numero gagnant est du côte : pass\n");
+		printf("Le numero gagnant est du cÃ´te : pass\n");
 	}
 	else if (numero >= 19 && numero <= 36) {
-		printf("Le numero gagnant est du côte : manque\n");
+		printf("Le numero gagnant est du cÃ´te : manque\n");
 	}
 }
 
@@ -103,22 +103,22 @@ void gain(int paris[], int mises[], int nbParis, int numeroChoisi) {
 				printf("Pari sur le numero %d, mise : %d, gain : %d\n", paris[i], mises[i], mises[i] * 36);
 			}
 		}
-		else if (paris[i] == 37) { // Pari sur la parité (pair)
+		else if (paris[i] == 37) { // Pari sur la paritÃ© (pair)
 			if (numeroChoisi % 2 == 0) {
 				printf("Pari sur la parite (pair), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
 		}
-		else if (paris[i] == 38) { // Pari sur la parité (impair)
+		else if (paris[i] == 38) { // Pari sur la paritÃ© (impair)
 			if (numeroChoisi % 2 != 0) {
 				printf("Pari sur la parite (impair), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
 		}
-		else if (paris[i] == 39) { // Pari sur le côté (pass)
+		else if (paris[i] == 39) { // Pari sur le cÃ´tÃ© (pass)
 			if (numeroChoisi >= 1 && numeroChoisi <= 18) {
 				printf("Pari sur le cote (pass), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
 		}
-		else if (paris[i] == 40) { // Pari sur le côté (manque)
+		else if (paris[i] == 40) { // Pari sur le cÃ´tÃ© (manque)
 			if (numeroChoisi >= 19 && numeroChoisi <= 36) {
 				printf("Pari sur le cote (manque), mise : %d, gain : %d\n", mises[i], mises[i] * 2);
 			}
@@ -171,7 +171,7 @@ void Roulette() {
 
 		if (paris[i] < 0 || (paris[i] > 36 && paris[i] < 37) || (paris[i] > 45)) {
 			printf("Pari invalide. Choisissez un numero entre 0 et 36, ou [37] pour pair, [38] pour impair, [39] pour pass, [40] pour manque, [41] pour 1 ers 12, [42] pour 2 nds 12, [43] pour 3 emes 12, rouge [44], noir [45].\n");
-			i--; // Répéter la saisie du pari pour cette itération.
+			i--; // RÃ©pÃ©ter la saisie du pari pour cette itÃ©ration.
 			continue;
 		}
 
@@ -179,7 +179,7 @@ void Roulette() {
 		scanf("%d", &mises[i]);
 	}
 
-	int numeroGagnant = numeroAleatoire(37); // Génère un numéro aléatoire entre 0 et 36
+	int numeroGagnant = numeroAleatoire(37); // GÃ©nÃ¨re un numÃ©ro alÃ©atoire entre 0 et 36
 
 	printf("Rien ne va plus...\n");
 	int numeroChoisi = numeros[numeroGagnant];
