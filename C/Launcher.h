@@ -11,9 +11,11 @@ void afficherPassManque(int numero);
 void afficherPlage(int numero);
 void gain(int paris[], int mises[], int nbParis, int numeroChoisi);
 void Roulette();
-void temp();
+void resume();
 int IncrementGame(int* Parties);
-struct statistique;
-
+struct statistique {
+	int nbPartie;
+	int gainTotal;
+};
 
 #endif
