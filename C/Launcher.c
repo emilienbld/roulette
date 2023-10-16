@@ -6,7 +6,7 @@
 #include <windows.h>
 
 void Start() {
-	printf("Jeu de Roulette de Casino.\n");
+	printf("Bonjour et bienvenu dans le jeu de la Roulette de Casino.\n");
 };
 
 void Menu() {
@@ -14,7 +14,7 @@ void Menu() {
 		Jouer = 1,
 		Quiter
 	};
-	const char* ChoixJouer = "\nQue voulez vous faire ? Jouer tapez [1] Quiter tapez [2] : ";
+	const char* ChoixJouer = "\nQue voulez vous faire ? Jouer tapez [1] Autre touche pour Quitter : ";
 	printf (ChoixJouer);
 	int action;
 	scanf_s("%d", &action);
@@ -41,17 +41,23 @@ void Menu() {
 	};
 };
 
+//Fonction le joueur veux quiter le jeu
 void End() {
+	printf("Au revoir et a bientot.\nVoici vos statistiques :\n");
+	//resume();
 	exit(0);
 };
 
+//Pour compter le nombre de partie total
 int IncrementGame(int* Parties) {
 	++(*Parties);
 	return *Parties;
 }
 
+//Initialisation à 0 de la structure des statiqtiques
 struct statistique gameStats = { 0,0 };
 
+//Fontion pour l'affichage des statistiques
 void resume() {
 	IncrementGame(&gameStats.nbPartie);
 	printf("\nVous avez joue %d parties\n", gameStats.nbPartie);
@@ -59,10 +65,12 @@ void resume() {
     return 0;
 }
 
+//Génère un nombre aléatoire en choisisant la max
 int numeroAleatoire(int max) {
 	return rand() % max;
 }
 
+//Fonction pour l'affichage de la couleur du numéro gagnant
 void afficherCouleur(int numeroGagnant) {
 	const char* couleur = "";
 	if (numeroGagnant == 0) {
@@ -77,7 +85,7 @@ void afficherCouleur(int numeroGagnant) {
 	printf("La couleur du numero gagnant est : %s\n", couleur);
 }
 
-
+//Fonction pour l'affichage de la parité du numéro gagnant
 void afficherParite(int numero) {
 	const char* parite = "";
 	if (numero == 0) {
@@ -92,6 +100,7 @@ void afficherParite(int numero) {
 	printf("La parite du numero gagnant est : %s\n", parite);
 }
 
+//Fonction pour l'affichage du côté Pass ou Manque du numéro gagnant
 void afficherPassManque(int numero) {
 	const char* PassManque = "";
 	if (numero == 0) {
@@ -106,6 +115,7 @@ void afficherPassManque(int numero) {
 	printf("Le numero gagnant est du cote : %s\n", PassManque);
 }
 
+//Fonction pour l'affichage de la "plage" du numéro gagnant
 void afficherPlage(int numero) {
 	const char* plage = "";
 	if (numero >= 1 && numero <= 12) {
@@ -118,79 +128,79 @@ void afficherPlage(int numero) {
 		plage = "3 emes 12";
 	}
 	printf("Plage du numero gagnant : %s\n", plage);
-
 }
 
+//Fonction pour le calcule des gains en fonction de chaque paris
 void gain(int paris[], int mises[], int nbParis, int numeroChoisi) {
 	for (int i = 0; i < nbParis; i++) {
 		int gainPartie = 0; // Initialisez le gain de cette partie à zéro
 		if (paris[i] >= 0 && paris[i] <= 36) {
 			if (paris[i] == numeroChoisi) {
 				gainPartie = mises[i] * 36;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur le numero %d, mise : %d, gain : %d\n", paris[i], mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 37) { // Pari sur la parité (pair)
 			if (numeroChoisi % 2 == 0) {
 				gainPartie = mises[i] * 2;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur la parite (pair), mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 38) { // Pari sur la parité (impair)
 			if (numeroChoisi % 2 != 0) {
 				gainPartie = mises[i] * 2;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur la parite (impair), mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 39) { // Pari sur le côté (pass)
 			if (numeroChoisi >= 1 && numeroChoisi <= 18) {
 				gainPartie = mises[i] * 2;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur le cote (pass), mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 40) { // Pari sur le côté (manque)
 			if (numeroChoisi >= 19 && numeroChoisi <= 36) {
 				gainPartie = mises[i] * 2;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur le cote (manque), mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 41) { // Pari sur la plage (1 ers 12)
 			if (numeroChoisi >= 1 && numeroChoisi <= 12) {
 				gainPartie = mises[i] * 3;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur la plage (1 ers 12), mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 42) { // Pari sur la plage (2 nds 12)
 			if (numeroChoisi >= 13 && numeroChoisi <= 24) {
 				gainPartie = mises[i] * 3;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur la plage (2 nds 12), mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 43) { // Pari sur la plage (3 emes 12)
 			if (numeroChoisi >= 25 && numeroChoisi <= 36) {
 				gainPartie = mises[i] * 3;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur la plage (3 emes 12), mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 44) { // Pari sur la couleur rouge
 			if (numeroChoisi >= 1 && numeroChoisi <= 10 || numeroChoisi >= 19 && numeroChoisi <= 28) {
 				gainPartie = mises[i] * 2;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur la couleur rouge, mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
 		else if (paris[i] == 45) { // Pari sur la couleur noire
 			if (numeroChoisi >= 11 && numeroChoisi <= 18 || numeroChoisi >= 29 && numeroChoisi <= 36) {
 				gainPartie = mises[i] * 2;
-				gameStats.gainTotal += gainPartie;
+				gameStats.gainTotal += gainPartie; // Pour les statiqtique du joueur (gain total)
 				printf("Pari sur la couleur noire, mise : %d, gain : %d\n", mises[i], gainPartie);
 			}
 		}
@@ -200,10 +210,12 @@ void gain(int paris[], int mises[], int nbParis, int numeroChoisi) {
 void Roulette() {
 	srand(time(0));
 
+	//Tableau des numéros de la roulette dans l'ordre
 	int numeros[37] = {
 		0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26
 	};
 
+	//Choix du nombre de pari dans cette partie
 	int nbParis;
 	printf("\nCombien de paris souhaitez-vous faire ? ");
 	scanf("%d", &nbParis);
@@ -213,6 +225,7 @@ void Roulette() {
 	int totalDesMises = 0;
 	int totalDesGains = 0;
 
+	//Boucle pour parier en mettant le type de parie et sa mise
 	for (int i = 0; i < nbParis; i++) {
 		printf("Pari %d : Pour un nombre de 0 a 36 [0-36], pair [37] impair [38], pass [39] manque[40], 1 ers 12 [41], 2 nds 12 [42], 3 emes 12 [43], rouge [44], noir [45] : ", i + 1);
 		scanf("%d", &paris[i]);
@@ -228,11 +241,11 @@ void Roulette() {
 	}
 
 	int numeroGagnant = numeroAleatoire(37); // Génère un numéro aléatoire entre 0 et 36
+	int numeroChoisi = numeros[numeroGagnant]; // Le numéro en fonction de son rang tiré au sort dans le tableau 
+	printf("\nRien ne va plus...\n"); // Phrase dite quand la roue tourne
+	printf("Le numero gagnant est : %d\n", numeroChoisi); // Affichage du numéro gagnant
 
-	printf("\nRien ne va plus...\n");
-	int numeroChoisi = numeros[numeroGagnant];
-	printf("Le numero gagnant est : %d\n", numeroChoisi);
-
+	//Appel des fonctions précédentes
 	afficherParite(numeroChoisi);
 	afficherPassManque(numeroChoisi);
 	afficherPlage(numeroChoisi);
