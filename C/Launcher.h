@@ -27,6 +27,4 @@ struct TypePari {
 	const char* description;
 };
 
-
-
 #endif
