@@ -84,7 +84,7 @@ int numeroAleatoire(int max) {
 //Fonction pour l'affichage de la couleur du numéro gagnant
 void afficherCouleur(int numeroGagnant) {
 	const char* couleur = (numeroGagnant == 0) ? "Vert" : ((numeroGagnant % 2 == 0) ? "Rouge" : "Noir");
-	printf("La couleur du numéro gagnant est : %s\n", couleur);
+	printf("La couleur du numero gagnant est : %s\n", couleur);
 }
 
 //Fonction pour l'affichage de la parité du numéro gagnant
@@ -101,48 +101,71 @@ void afficherPassManque(int numero) {
 
 //Fonction pour l'affichage de la "plage" du numéro gagnant
 void afficherPlage(int numero) {
-	const char* plage = (numero >= 1 && numero <= 12) ? "1ers 12" : ((numero >= 13 && numero <= 24) ? "2nds 12" : "3èmes 12");
-	printf("Plage du numéro gagnant : %s\n", plage);
+	const char* plage = (numero >= 1 && numero <= 12) ? "1ers 12" : ((numero >= 13 && numero <= 24) ? "2nds 12" : "3emes 12");
+	printf("Plage du numero gagnant : %s\n", plage);
 }
 
 // Structure pour les types de paris et les coefficients correspondants
 struct TypePari typesParis[] = {
-	{0, 36, "Numéro"},
-	{PARITE_PAIR, 2, "Parité (pair)"},
-	{PARITE_IMPAIR, 2, "Parité (impair)"},
-	{COTE_PASS, 2, "Côté (pass)"},
-	{COTE_MANQUE, 2, "Côté (manque)"},
+	{0, 36, "Numero"},
+	{PARITE_PAIR, 2, "Parite (pair)"},
+	{PARITE_IMPAIR, 2, "Parite (impair)"},
+	{COTE_PASS, 2, "Côte (pass)"},
+	{COTE_MANQUE, 2, "Côte (manque)"},
 	{PLAGE_1ER_12, 3, "Plage (1ers 12)"},
 	{PLAGE_2ND_12, 3, "Plage (2nds 12)"},
-	{PLAGE_3EME_12, 3, "Plage (3èmes 12)"},
+	{PLAGE_3EME_12, 3, "Plage (3emes 12)"},
 	{COULEUR_ROUGE, 2, "Couleur (rouge)"},
 	{COULEUR_NOIR, 2, "Couleur (noir)"}
 };
 
- //Fonction pour calculer les gains en fonction de chaque pari
+ //Fonction pour afficher les paris gagnants
 void gain(int paris[], int mises[], int nbParis, int numeroChoisi, int numeroGagnant) {
 	for (int i = 0; i < nbParis; i++) {
 		int gainPartie = 0;
 		for (int j = 0; j < sizeof(typesParis) / sizeof(typesParis[0]); j++) {
 			if (paris[i] == typesParis[j].code) {
-				if (paris[i] == 0 || (paris[i] == PARITE_PAIR && numeroChoisi % 2 == 0) ||
-					(paris[i] == PARITE_IMPAIR && numeroChoisi % 2 != 0) ||
-					(paris[i] == COTE_PASS && numeroChoisi >= 1 && numeroChoisi <= 18) ||
-					(paris[i] == COTE_MANQUE && numeroChoisi >= 19 && numeroChoisi <= 36) ||
-					(paris[i] == PLAGE_1ER_12 && numeroChoisi >= 1 && numeroChoisi <= 12) ||
-					(paris[i] == PLAGE_2ND_12 && numeroChoisi >= 13 && numeroChoisi <= 24) ||
-					(paris[i] == PLAGE_3EME_12 && numeroChoisi >= 25 && numeroChoisi <= 36) ||
-					(paris[i] == COULEUR_ROUGE && numeroGagnant % 2 == 0) ||
-					(paris[i] == COULEUR_NOIR && numeroGagnant % 2 != 0)) {
+				if (checkParis(paris[i], numeroChoisi, numeroGagnant)) {
 					gainPartie = mises[i] * typesParis[j].coefficient;
-						gameStats.gainTotal += gainPartie; //Statiqtique des gains total du joueurs
-						printf("Pari sur %s, mise : %d, gain : %d\n", typesParis[j].description, mises[i], gainPartie);
+					gameStats.gainTotal += gainPartie;
+					printf("Pari sur %s, mise : %d, gain : %d\n", typesParis[j].description, mises[i], gainPartie);
 				}
 				break;
 			}
 		}
 	}
 }
+
+//Fonction pour calculer les gains en fonction de chaque pari
+int checkParis(int code, int numeroChoisi, int numeroGagnant) {
+	switch (code) {
+	case 0:
+		return (numeroChoisi >= 0 && numeroChoisi <= 36);
+	case PARITE_PAIR:
+		return (numeroChoisi % 2 == 0);
+	case PARITE_IMPAIR:
+		return (numeroChoisi % 2 != 0);
+	case COTE_PASS:
+		return (numeroChoisi >= 1 && numeroChoisi <= 18);
+	case COTE_MANQUE:
+		return (numeroChoisi >= 19 && numeroChoisi <= 36);
+	case PLAGE_1ER_12:
+		return (numeroChoisi >= 1 && numeroChoisi <= 12);
+	case PLAGE_2ND_12:
+		return (numeroChoisi >= 13 && numeroChoisi <= 24);
+	case PLAGE_3EME_12:
+		return (numeroChoisi >= 25 && numeroChoisi <= 36);
+	case COULEUR_ROUGE:
+		return (numeroGagnant % 2 == 0);
+	case COULEUR_NOIR:
+		return (numeroGagnant % 2 != 0);
+	default:
+		return 0;
+	}
+}
+
+
+
 
 void Roulette() {
 	srand(time(0));
