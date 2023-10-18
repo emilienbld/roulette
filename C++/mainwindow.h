@@ -53,6 +53,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public:
+    void initialiserPartie();
+
+
 private slots:
     void on_tirerButton_clicked();
     void on_passerButton_clicked();

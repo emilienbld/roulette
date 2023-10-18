@@ -48,11 +48,16 @@ int Main::calculer_valeur() {
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    initialiserPartie(); // Appel de la fonction pour initialiser la partie au démarrage
+}
+
+void MainWindow::initialiserPartie() {
     deck.melanger();
+    main_joueur = Main();
+    main_croupier = Main();
     main_joueur.ajouter_carte(deck.tirer_carte());
     main_croupier.ajouter_carte(deck.tirer_carte());
     main_joueur.ajouter_carte(deck.tirer_carte());
-    main_croupier.ajouter_carte(deck.tirer_carte());
     afficher_main_joueur();
     afficher_main_croupier();
 }
@@ -67,9 +72,28 @@ void MainWindow::on_tirerButton_clicked() {
     int valeur_main_joueur = main_joueur.calculer_valeur();
     if (valeur_main_joueur > 21) {
         // Le joueur a sauté
-        qDebug() << "Vous avez sauté (plus de 21 points). Le croupier gagne !";
+        QString resultat = "Vous avez sauté (plus de 21 points). Le croupier gagne !";
+
+            // Afficher le résultat dans une boîte de dialogue
+            QMessageBox messageBox;
+        messageBox.setText(resultat);
+        messageBox.setStandardButtons(QMessageBox::Retry | QMessageBox::Close);
+        messageBox.setDefaultButton(QMessageBox::Retry);
+        int choice = messageBox.exec();
+
+        if (choice == QMessageBox::Retry) {
+            // L'utilisateur souhaite rejouer
+            initialiserPartie(); // Réinitialiser la partie
+        } else {
+            // L'utilisateur souhaite quitter le jeu
+            this->close();
+        }
     }
 }
+
+
+
+
 
 void MainWindow::on_passerButton_clicked() {
     while (main_croupier.calculer_valeur() < 17) {
@@ -90,9 +114,6 @@ void MainWindow::on_passerButton_clicked() {
         // Le croupier gagne
         resultat = "Le croupier gagne !";
     }
-    // Mettre à jour le texte du label mainCroupierLabel
-//    ui->mainCroupierLabel->setText("test");
-//    afficher_main_croupier(1);
 
     // Afficher le résultat dans une boîte de dialogue
     QMessageBox messageBox;
@@ -103,22 +124,12 @@ void MainWindow::on_passerButton_clicked() {
 
     if (choice == QMessageBox::Retry) {
         // L'utilisateur souhaite rejouer
-        deck.melanger();
-        main_joueur = Main();
-        main_croupier = Main();
-        main_joueur.ajouter_carte(deck.tirer_carte());
-        main_croupier.ajouter_carte(deck.tirer_carte());
-        main_joueur.ajouter_carte(deck.tirer_carte());
-        main_croupier.ajouter_carte(deck.tirer_carte());
-        afficher_main_joueur();
-        afficher_main_croupier();
+        initialiserPartie(); // Réinitialiser la partie
     } else {
         // L'utilisateur souhaite quitter le jeu
         this->close();
     }
 }
-
-
 
 void MainWindow::afficher_main_joueur() {
     const std::vector<Carte>& cartes_joueur = main_joueur.obtenir_cartes();
@@ -130,16 +141,18 @@ void MainWindow::afficher_main_joueur() {
     ui->mainJoueurLabel->setText(main_joueur_str);
 }
 
-
 void MainWindow::afficher_main_croupier() {
     const std::vector<Carte>& cartes_croupier = main_croupier.obtenir_cartes_croupier();
     QString main_croupier_str = "Main du croupier : ";
+    int valeur_croupier = 0; // Initialisez la valeur totale du croupier à zéro
 
-    // Parcourir toutes les cartes de la main du croupier et les ajouter à la chaîne
+    // Parcourez toutes les cartes de la main du croupier et ajoutez-les à la chaîne
     for (const Carte& carte : cartes_croupier) {
         main_croupier_str += carte.nom + " ";
+        valeur_croupier += carte.valeur; // Ajoutez la valeur de la carte à la valeur totale
     }
 
-    ui->mainCroupierLabel->setText(main_croupier_str);
+    // Affichez la valeur totale du croupier dans l'étiquette appropriée
+    ui->mainCroupierLabel->setText(main_croupier_str + "(" + QString::number(valeur_croupier) + " points)");
 }
 
