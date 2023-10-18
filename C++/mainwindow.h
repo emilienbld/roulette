@@ -44,8 +44,6 @@ public:
     }
 };
 
-
-
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -55,7 +53,7 @@ public:
 
 public:
     void initialiserPartie();
-
+    void afficherResultat(const QString& resultat);
 
 private slots:
     void on_tirerButton_clicked();

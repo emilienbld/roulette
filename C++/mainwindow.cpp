@@ -46,9 +46,20 @@ int Main::calculer_valeur() {
     return valeur;
 }
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
-    ui->setupUi(this);
-    initialiserPartie(); // Appel de la fonction pour initialiser la partie au démarrage
+void MainWindow::afficherResultat(const QString& resultat) {
+    QMessageBox messageBox;
+    messageBox.setText(resultat);
+    messageBox.setStandardButtons(QMessageBox::Retry | QMessageBox::Close);
+    messageBox.setDefaultButton(QMessageBox::Retry);
+    int choice = messageBox.exec();
+
+    if (choice == QMessageBox::Retry) {
+        // L'utilisateur souhaite rejouer
+        initialiserPartie(); // Réinitialiser la partie
+    } else {
+        // L'utilisateur souhaite quitter le jeu
+        this->close();
+    }
 }
 
 void MainWindow::initialiserPartie() {
@@ -62,6 +73,11 @@ void MainWindow::initialiserPartie() {
     afficher_main_croupier();
 }
 
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+    ui->setupUi(this);
+    initialiserPartie(); // Appel de la fonction pour initialiser la partie au démarrage
+}
+
 MainWindow::~MainWindow() {
     delete ui;
 }
@@ -72,28 +88,9 @@ void MainWindow::on_tirerButton_clicked() {
     int valeur_main_joueur = main_joueur.calculer_valeur();
     if (valeur_main_joueur > 21) {
         // Le joueur a sauté
-        QString resultat = "Vous avez sauté (plus de 21 points). Le croupier gagne !";
-
-            // Afficher le résultat dans une boîte de dialogue
-            QMessageBox messageBox;
-        messageBox.setText(resultat);
-        messageBox.setStandardButtons(QMessageBox::Retry | QMessageBox::Close);
-        messageBox.setDefaultButton(QMessageBox::Retry);
-        int choice = messageBox.exec();
-
-        if (choice == QMessageBox::Retry) {
-            // L'utilisateur souhaite rejouer
-            initialiserPartie(); // Réinitialiser la partie
-        } else {
-            // L'utilisateur souhaite quitter le jeu
-            this->close();
-        }
+        afficherResultat("Vous avez sauté (plus de 21 points). Le croupier gagne !");
     }
 }
-
-
-
-
 
 void MainWindow::on_passerButton_clicked() {
     while (main_croupier.calculer_valeur() < 17) {
@@ -115,20 +112,7 @@ void MainWindow::on_passerButton_clicked() {
         resultat = "Le croupier gagne !";
     }
 
-    // Afficher le résultat dans une boîte de dialogue
-    QMessageBox messageBox;
-    messageBox.setText(resultat);
-    messageBox.setStandardButtons(QMessageBox::Retry | QMessageBox::Close);
-    messageBox.setDefaultButton(QMessageBox::Retry);
-    int choice = messageBox.exec();
-
-    if (choice == QMessageBox::Retry) {
-        // L'utilisateur souhaite rejouer
-        initialiserPartie(); // Réinitialiser la partie
-    } else {
-        // L'utilisateur souhaite quitter le jeu
-        this->close();
-    }
+    afficherResultat(resultat);
 }
 
 void MainWindow::afficher_main_joueur() {
@@ -155,4 +139,3 @@ void MainWindow::afficher_main_croupier() {
     // Affichez la valeur totale du croupier dans l'étiquette appropriée
     ui->mainCroupierLabel->setText(main_croupier_str + "(" + QString::number(valeur_croupier) + " points)");
 }
-
