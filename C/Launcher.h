@@ -10,7 +10,7 @@ void afficherParite(int numero);
 void afficherPassManque(int numero);
 void afficherPlage(int numero);
 void gain(int paris[], int mises[], int nbParis, int numeroChoisi, int numeroGagnant);
-int checkParis(int code, int numeroChoisi, int numeroGagnant);
+//int checkParis(int code, int numeroChoisi, int numeroGagnant);
 void Roulette();
 void resume();
 int IncrementGame(int* Parties);
@@ -26,6 +26,10 @@ struct TypePari {
 	int code;
 	int coefficient;
 	const char* description;
+	int condition;
+	int valeur;
 };
+
+
 
 #endif
