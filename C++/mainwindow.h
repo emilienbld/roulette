@@ -4,10 +4,6 @@
 #include <QMainWindow>
 #include <vector>
 
-namespace Ui {
-class MainWindow;
-}
-
 class Carte {
 public:
     QString nom;
@@ -38,11 +34,11 @@ public:
     const std::vector<Carte>& obtenir_cartes() const {
         return cartes;
     }
-
-    const std::vector<Carte>& obtenir_cartes_croupier() const {
-        return cartes;
-    }
 };
+
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -51,11 +47,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-public:
+public slots:
     void initialiserPartie();
-    void afficherResultat(const QString& resultat);
-
-private slots:
     void on_tirerButton_clicked();
     void on_passerButton_clicked();
 
