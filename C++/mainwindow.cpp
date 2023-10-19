@@ -127,16 +127,61 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
+//void MainWindow::on_tirerButton_clicked() {
+//    // Gère le clic sur le bouton "Tirer"
+//    main_joueur.ajouter_carte(deck.tirer_carte());
+//    afficher_main_joueur();
+//    int valeur_main_joueur = main_joueur.calculer_valeur();
+//    if (valeur_main_joueur > 21) {
+//        QString resultat = "Vous avez sauté (plus de 21 points). Le croupier gagne !";
+//            boiteMsg(resultat);
+//    }
+//}
+
+
+//void MainWindow::on_tirerButton_clicked() {
+//    // Gère le clic sur le bouton "Tirer"
+//    Carte carte_piochee = deck.tirer_carte();
+//    main_joueur.ajouter_carte(carte_piochee);
+
+//    // Afficher les cartes du joueur
+//    ui->mainJoueurLabel->setText(afficher_main_joueur() + "(" + QString::number(carte_piochee.valeur) + " points)");
+
+//    int valeur_main_joueur = main_joueur.calculer_valeur();
+//    if (valeur_main_joueur > 21) {
+//            QString resultat = "Vous avez sauté (plus de 21 points). Le croupier gagne !";
+//                boiteMsg(resultat);
+//    }
+//}
+
+
+
 void MainWindow::on_tirerButton_clicked() {
     // Gère le clic sur le bouton "Tirer"
-    main_joueur.ajouter_carte(deck.tirer_carte());
-    afficher_main_joueur();
+    Carte carte_piochee = deck.tirer_carte();
+    main_joueur.ajouter_carte(carte_piochee);
+
+    // Afficher les cartes du joueur
+    QString main_joueur_str = "";
+    for (const Carte& carte : main_joueur.obtenir_cartes()) {
+        main_joueur_str += carte.nom + " ";
+    }
+
+    ui->mainJoueurLabel->setText(main_joueur_str + "(" + QString::number(main_joueur.calculer_valeur()) + " points)");
+
     int valeur_main_joueur = main_joueur.calculer_valeur();
     if (valeur_main_joueur > 21) {
         QString resultat = "Vous avez sauté (plus de 21 points). Le croupier gagne !";
             boiteMsg(resultat);
     }
 }
+
+
+
+
+
+
+
 
 void MainWindow::on_passerButton_clicked() {
     // Gère le clic sur le bouton "Passer"
@@ -185,10 +230,8 @@ void MainWindow::afficher_main_croupier() {
     // Affiche la main du croupier et sa valeur
     const std::vector<Carte>& cartes_croupier = main_croupier.obtenir_cartes();
     QString main_croupier_str = "";
-    int valeur_croupier = 0;
     for (const Carte& carte : cartes_croupier) {
         main_croupier_str += carte.nom + " ";
-        valeur_croupier += carte.valeur;
     }
-    ui->mainCroupierLabel->setText(main_croupier_str + "(" + QString::number(valeur_croupier) + " points)");
+    ui->mainCroupierLabel->setText(main_croupier_str + "(" + QString::number(main_croupier.calculer_valeur()) + " points)");
 }
