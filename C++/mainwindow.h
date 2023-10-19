@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <vector>
+#include <QLabel>
 
 class Carte {
 public:
@@ -58,6 +59,8 @@ private:
     Main main_joueur;
     Main main_croupier;
 
+    void setLabelStyles(QLabel* label);
+    void boiteMsg(const QString& resultat);
     void afficher_main_joueur();
     void afficher_main_croupier();
 };
