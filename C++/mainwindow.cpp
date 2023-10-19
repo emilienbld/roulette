@@ -48,10 +48,25 @@ int Main::calculer_valeur() {
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    this->setStyleSheet("background-color: #FF5733;");  // Couleur de fond de la fenêtre
+    ui->tirerButton->setStyleSheet("background-color: #E8E1E1;");  // Couleur de fond du bouton tirerButton
+    ui->passerButton->setStyleSheet("background-color: #E8E1E1;");  // Couleur de fond du bouton passerButton
+
     connect(ui->tirerButton, SIGNAL(clicked()), this, SLOT(on_tirerButton_clicked()));
     connect(ui->passerButton, SIGNAL(clicked()), this, SLOT(on_passerButton_clicked()));
     initialiserPartie(); // Appel de la fonction pour initialiser la partie au démarrage
+
+    QWidget* tapis = this->findChild<QWidget*>("tapis"); // Utilisez le nom que vous avez défini dans "objectName"
+    if (tapis) {
+        tapis->setStyleSheet("background-color: #38754A;");
+        tapis->lower();
+    }
+    ui->maMain->setAlignment(Qt::AlignCenter);
+    ui->maMain->setStyleSheet("background-color: #66626B; color: white; font-size: 16px;");
+    ui->saMain->setAlignment(Qt::AlignCenter);
+    ui->saMain->setStyleSheet("background-color: #66626B; color: white; font-size: 16px;");
 }
+
 
 void MainWindow::initialiserPartie() {
     deck.melanger();
@@ -86,6 +101,7 @@ void MainWindow::on_tirerButton_clicked() {
             this->close();
         }
     }
+//    return valeur_main_joueur;
 }
 
 void MainWindow::on_passerButton_clicked() {
@@ -117,17 +133,20 @@ void MainWindow::on_passerButton_clicked() {
 
 void MainWindow::afficher_main_joueur() {
     const std::vector<Carte>& cartes_joueur = main_joueur.obtenir_cartes();
-    QString main_joueur_str = "Votre main : ";
+    QString main_joueur_str = "";
     for (const Carte& carte : cartes_joueur) {
         main_joueur_str += carte.nom + " ";
     }
+
+    ui->mainJoueurLabel->setAlignment(Qt::AlignCenter);
+    ui->mainJoueurLabel->setStyleSheet("background-color: white; font-size: 16px;");
     main_joueur_str += "(" + QString::number(main_joueur.calculer_valeur()) + " points)";
     ui->mainJoueurLabel->setText(main_joueur_str);
 }
 
 void MainWindow::afficher_main_croupier() {
     const std::vector<Carte>& cartes_croupier = main_croupier.obtenir_cartes(); // Utilisez obtenir_cartes() au lieu de obtenir_cartes_croupier()
-    QString main_croupier_str = "Main du croupier : ";
+    QString main_croupier_str = "";
     int valeur_croupier = 0;
 
     for (const Carte& carte : cartes_croupier) {
@@ -135,6 +154,8 @@ void MainWindow::afficher_main_croupier() {
         valeur_croupier += carte.valeur;
     }
 
+    ui->mainCroupierLabel->setAlignment(Qt::AlignCenter);
+    ui->mainCroupierLabel->setStyleSheet("background-color: white; font-size: 16px;");
     ui->mainCroupierLabel->setText(main_croupier_str + "(" + QString::number(valeur_croupier) + " points)");
 }
 
