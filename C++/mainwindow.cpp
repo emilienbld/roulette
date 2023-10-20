@@ -6,11 +6,19 @@
 #include <algorithm>
 #include <QMessageBox>
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Définition de constantes pour les couleurs et la taille de la police
-const QString COULEUR_FOND = "#FF5733";
+const QString COULEUR_FOND = "#B21A33";
 const QString COULEUR_BOUTON = "#E8E1E1";
 const QString COULEUR_TEXTE = "white";
 const int TAILLE_POLICE = 16;
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Initialisation du jeu de cartes
 Deck::Deck() {
@@ -24,11 +32,19 @@ Deck::Deck() {
     }
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Mélange les cartes en utilisant le temps comme graine
 void Deck::melanger() {
     srand(static_cast<unsigned>(time(0)));
     std::random_shuffle(cartes.begin(), cartes.end());
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Tire une carte du dessus du jeu
 Carte Deck::tirer_carte() {
@@ -37,10 +53,18 @@ Carte Deck::tirer_carte() {
     return carte;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Ajoute une carte à la main du joueur ou du croupier
 void Main::ajouter_carte(Carte carte) {
     cartes.push_back(carte);
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Calcule la valeur totale des cartes dans la main
 int Main::calculer_valeur() {
@@ -60,6 +84,10 @@ int Main::calculer_valeur() {
     return valeur;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Initialisation de l'interface utilisateur et du jeu
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -67,12 +95,27 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tirerButton->setStyleSheet("border-radius: 50px; background-color: " + COULEUR_BOUTON);
     ui->passerButton->setStyleSheet("border-radius: 50px; background-color: " + COULEUR_BOUTON);
 
+    // Initialisation des compteurs (stats)
+    nombreDeVictoires = 0;
+    nombreDePertes = 0;
+
+    // Création des étiquettes stats
+    labelVictoires = new QLabel("Victoires : 0", this);
+    labelPertes = new QLabel("Pertes : 0", this);
+
+    labelVictoires->setStyleSheet("color: white;");
+    labelPertes->setStyleSheet("color: white;");
+
+    // Positionnement des labels
+    labelVictoires->move(20, 20);
+    labelPertes->move(20, 50);
+
     initialiserPartie();
 
-    // Personnalisation du tapis, boutons et lables
+    // Personnalisation du tapis, boutons et labels
     QWidget* tapis = this->findChild<QWidget*>("tapis");
     if (tapis) {
-        tapis->setStyleSheet("background-color: #38754A; border-radius: 30px;");
+        tapis->setStyleSheet("background-color: #085B12; border-radius: 30px;");
         tapis->lower();
     }
     setLabelStyles(ui->maMain);
@@ -81,14 +124,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     setLabelStyles(ui->mainCroupierLabel);
     ui->mainJoueurLabel->setStyleSheet("background-color: white; color: black; font-size: " + QString::number(TAILLE_POLICE) + "px; border-radius: 30px;");
     ui->mainCroupierLabel->setStyleSheet("background-color: white; color: black; font-size: " + QString::number(TAILLE_POLICE) + "px; border-radius: 30px;");
-
+    setLabelStyles(ui->blackjack);
+    ui->blackjack->setStyleSheet("background-color: #D6DF15; color: black; font-size: " + QString::number(TAILLE_POLICE) + "px; border-radius: 10px;");
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Configure le style des étiquettes de la main
 void MainWindow::setLabelStyles(QLabel* label) {
     label->setAlignment(Qt::AlignCenter);
     label->setStyleSheet("background-color: #66626B; color: " + COULEUR_TEXTE + "; font-size: " + QString::number(TAILLE_POLICE) + "px; border-radius: 20px;");
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Initialise une nouvelle partie en mélangeant le jeu et distribuant des cartes
 void MainWindow::initialiserPartie() {
@@ -102,10 +154,18 @@ void MainWindow::initialiserPartie() {
     afficher_main_croupier();
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Destructeur
 MainWindow::~MainWindow() {
     delete ui;
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Gère le clic sur le bouton "Tirer"
 void MainWindow::on_tirerButton_clicked() {
@@ -120,6 +180,10 @@ void MainWindow::on_tirerButton_clicked() {
             boiteMsg(resultat);
     }
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Gère le clic sur le bouton "Passer"
 void MainWindow::on_passerButton_clicked() {
@@ -140,6 +204,10 @@ void MainWindow::on_passerButton_clicked() {
     boiteMsg(resultat);
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // Affiche une boîte de dialogue avec le résultat et une option de rejouer ou quitter
 void MainWindow::boiteMsg(const QString& resultat) {
     QMessageBox messageBox;
@@ -152,7 +220,22 @@ void MainWindow::boiteMsg(const QString& resultat) {
     } else {
         this->close();
     }
+
+    // Mettre à jour les compteurs
+    if (resultat == "Vous gagnez !") {
+        nombreDeVictoires++;
+    } else {
+        nombreDePertes++;
+    }
+
+    // Mettre à jour l'affichage des compteurs
+    labelVictoires->setText("Victoires : " + QString::number(nombreDeVictoires));
+    labelPertes->setText("Pertes : " + QString::number(nombreDePertes));
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Affiche la main du joueur et son total
 void MainWindow::afficher_main_joueur() {
@@ -163,6 +246,10 @@ void MainWindow::afficher_main_joueur() {
     }
     ui->mainJoueurLabel->setText(main_joueur_str + "(" + QString::number(main_joueur.calculer_valeur()) + " points)");
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Affiche la main du croupier et son total
 void MainWindow::afficher_main_croupier() {

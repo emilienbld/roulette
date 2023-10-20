@@ -58,6 +58,11 @@ private:
     Deck deck;
     Main main_joueur;
     Main main_croupier;
+    int nombreDeVictoires;  // Ajout : compteur de victoires
+    int nombreDePertes;     // Ajout : compteur de pertes
+
+    QLabel* labelVictoires;  // Ajout : étiquette pour afficher le nombre de victoires
+    QLabel* labelPertes;     // Ajout : étiquette pour afficher le nombre de pertes
 
     void setLabelStyles(QLabel* label);
     void boiteMsg(const QString& resultat);
